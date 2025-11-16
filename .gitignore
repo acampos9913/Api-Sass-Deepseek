@@ -3,7 +3,9 @@
 /node_modules
 /build
 
-.kilocode
+/.kilocode
+/prisma
+/generated
 
 # Logs
 logs
