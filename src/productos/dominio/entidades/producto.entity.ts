@@ -1,3 +1,5 @@
+import { VarianteProducto } from './variante-producto.entity';
+
 /**
  * Entidad de Producto que representa un producto en el sistema
  * Sigue los principios de Domain-Driven Design y Arquitectura Limpia
@@ -37,6 +39,10 @@ export class Producto {
     public readonly fechaPublicacion: Date | null,
     public readonly fechaArchivado: Date | null,
     public readonly fechaEliminado: Date | null,
+    public readonly variantes: VarianteProducto[] = [], // Array de variantes del producto
+    public readonly opcionesVariantes: { nombre: string; valores: string[] }[] = [], // Opciones de variantes (ej: Color, Talla)
+    public readonly imagenIds: string[] = [], // IDs de imágenes del producto
+    public readonly imagenPrincipalId: string | null = null, // ID de la imagen principal
   ) {}
 
   /**
@@ -142,6 +148,10 @@ export class Producto {
       this.fechaPublicacion,
       this.fechaArchivado,
       this.fechaEliminado,
+      this.variantes,
+      this.opcionesVariantes,
+      this.imagenIds,
+      this.imagenPrincipalId,
     );
   }
 
@@ -192,6 +202,10 @@ export class Producto {
       this.fechaPublicacion,
       fechaArchivado,
       fechaEliminado,
+      this.variantes,
+      this.opcionesVariantes,
+      this.imagenIds,
+      this.imagenPrincipalId,
     );
   }
 
@@ -232,6 +246,10 @@ export class Producto {
       this.fechaPublicacion,
       this.fechaArchivado,
       this.fechaEliminado,
+      this.variantes,
+      this.opcionesVariantes,
+      this.imagenIds,
+      this.imagenPrincipalId,
     );
   }
 
@@ -275,6 +293,10 @@ export class Producto {
       null, // No publicado
       null,
       null,
+      [...this.variantes], // Duplicar variantes
+      [...this.opcionesVariantes], // Duplicar opciones de variantes
+      [...this.imagenIds], // Duplicar IDs de imágenes
+      this.imagenPrincipalId, // Mantener misma imagen principal
     );
   }
 
@@ -324,6 +346,10 @@ export class Producto {
       this.fechaPublicacion,
       this.fechaArchivado,
       this.fechaEliminado,
+      this.variantes,
+      this.opcionesVariantes,
+      this.imagenIds,
+      this.imagenPrincipalId,
     );
   }
 
@@ -410,6 +436,10 @@ export class Producto {
       new Date(), // Fecha de publicación
       this.fechaArchivado,
       this.fechaEliminado,
+      this.variantes,
+      this.opcionesVariantes,
+      this.imagenIds,
+      this.imagenPrincipalId,
     );
   }
 }

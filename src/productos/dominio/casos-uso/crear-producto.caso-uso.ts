@@ -3,6 +3,8 @@ import { Producto } from '../entidades/producto.entity';
 import type { RepositorioProducto } from '../interfaces/repositorio-producto.interface';
 import { ExcepcionDominio } from '../../../comun/excepciones/excepcion-dominio';
 import { ServicioRespuestaEstandar, RespuestaEstandar } from '../../../comun/aplicacion/servicios/servicio-respuesta-estandar';
+import { ProductoCreadoEvento } from '../eventos/producto-creado.evento';
+import { KafkaService } from '../../../comun/infraestructura/servicios/kafka.service';
 
 /**
  * DTO para la creación de productos
@@ -33,6 +35,7 @@ export class CrearProductoCasoUso {
   constructor(
     @Inject('RepositorioProducto')
     private readonly repositorioProducto: RepositorioProducto,
+    private readonly kafkaService: KafkaService,
   ) {}
 
   /**
@@ -107,6 +110,10 @@ export class CrearProductoCasoUso {
 
     // Guardar el producto en el repositorio
     const productoGuardado = await this.repositorioProducto.guardar(producto);
+
+    // Emitir evento de dominio para sincronización con MongoDB
+    const evento = ProductoCreadoEvento.desdeProducto(productoGuardado);
+    await this.kafkaService.publicar(evento);
 
     // Convertir a DTO para la respuesta
     const productoDto = this.aDto(productoGuardado);

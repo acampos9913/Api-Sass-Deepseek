@@ -24,10 +24,11 @@ import { CreditosModule } from './creditos/creditos.module';
 import { ConfiguracionTiendaModule } from './configuracion/configuracion-tienda.module';
 import { MongodbModule } from './mongodb/mongodb.module';
 import { ExcepcionGlobalFiltro } from './filtros/excepcion-global.filtro';
-import { LoggingService } from './logging/logging.service';
+import { LoggingModule } from './logging/logging.module';
 import { ValidationPipe } from '@nestjs/common';
 import { PuntoVentaModule } from './punto-venta/punto-venta.module';
 import { PlanesModule } from './planes/planes.module';
+import { TestModule } from './test/test.module';
 
 /**
  * Módulo principal de la aplicación
@@ -44,6 +45,9 @@ import { PlanesModule } from './planes/planes.module';
         abortEarly: true,
       },
     }),
+    
+    // Módulos de infraestructura global
+    LoggingModule,
     
     // Módulos de funcionalidad organizados por dominio
     AutenticacionModule,
@@ -67,13 +71,15 @@ import { PlanesModule } from './planes/planes.module';
     PuntoVentaModule,
     PlanesModule,
     MongodbModule,
+    
+    // Módulo de testing solo en desarrollo
+    ...(process.env.NODE_ENV === 'development' ? [TestModule] : []),
   ],
   controllers: [AppController],
   providers: [
     // Servicios principales
     AppService,
     PrismaService,
-    LoggingService,
     
     // Configuración global de validación
     {
@@ -103,7 +109,6 @@ import { PlanesModule } from './planes/planes.module';
   ],
   exports: [
     PrismaService,
-    LoggingService,
   ],
 })
 export class AppModule {

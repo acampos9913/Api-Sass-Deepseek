@@ -19,6 +19,7 @@ import { CrearProductoDto } from '../../aplicacion/dto/crear-producto.dto';
 import { ActualizarProductoDto } from '../../aplicacion/dto/actualizar-producto.dto';
 import { CrearProductoCasoUso } from '../../dominio/casos-uso/crear-producto.caso-uso';
 import { ListarProductosCasoUso, OpcionesListado, FiltrosProductos } from '../../dominio/casos-uso/listar-productos.caso-uso';
+import { ObtenerProductoPorIdCasoUso } from '../../dominio/casos-uso/obtener-producto-por-id.caso-uso';
 import {
   ListarProductosLecturaCasoUso,
   OpcionesListadoLectura,
@@ -40,6 +41,7 @@ export class ProductosController {
     private readonly crearProductoCasoUso: CrearProductoCasoUso,
     private readonly listarProductosCasoUso: ListarProductosCasoUso,
     private readonly listarProductosLecturaCasoUso: ListarProductosLecturaCasoUso,
+    private readonly obtenerProductoPorIdCasoUso: ObtenerProductoPorIdCasoUso,
   ) {}
 
   @Get()
@@ -243,15 +245,7 @@ export class ProductosController {
     },
   })
   async obtenerPorId(@Param() parametros: ParametrosRutaProductoSimpleDto) {
-    // TODO: Implementar caso de uso específico para obtener producto por ID desde PostgreSQL
-    // Por ahora usamos el repositorio directamente como placeholder
-    // En una implementación completa, usaríamos un caso de uso específico para escrituras
-    return {
-      mensaje: 'Endpoint para obtener producto por ID desde PostgreSQL - Pendiente de implementar',
-      data: null,
-      tipo_mensaje: 'Advertencia',
-      estado_respuesta: 501,
-    };
+    return await this.obtenerProductoPorIdCasoUso.ejecutar(parametros.id);
   }
 
   @Post()
